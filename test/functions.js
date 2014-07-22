@@ -2,6 +2,13 @@
 
   module('Functions');
 
+  asyncTest('delay', 2, function() {
+    var delayed = false;
+    _.delay(function(){ delayed = true; }, 100);
+    setTimeout(function(){ ok(!delayed, "didn't delay the function quite yet"); }, 50);
+    setTimeout(function(){ ok(delayed, 'delayed the function'); start(); }, 150);
+  });
+
   asyncTest('debounce', 1, function() {
     var counter = 0;
     var incr = function(){ counter++; };
