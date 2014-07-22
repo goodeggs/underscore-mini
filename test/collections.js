@@ -618,21 +618,4 @@
     ok(_.isArray(actual), 'should not throw converting a node list');
   });
 
-  test('size', function() {
-    equal(_.size({one : 1, two : 2, three : 3}), 3, 'can compute the size of an object');
-    equal(_.size([1, 2, 3]), 3, 'can compute the size of an array');
-    equal(_.size({length: 3, 0: 0, 1: 0, 2: 0}), 3, 'can compute the size of Array-likes');
-
-    var func = function() {
-      return _.size(arguments);
-    };
-
-    equal(func(1, 2, 3, 4), 4, 'can test the size of the arguments object');
-
-    equal(_.size('hello'), 5, 'can compute the size of a string literal');
-    equal(_.size(new String('hello')), 5, 'can compute the size of string object');
-
-    equal(_.size(null), 0, 'handles nulls');
-  });
-
 }());
