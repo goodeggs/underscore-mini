@@ -600,33 +600,6 @@
     strictEqual(_.sortedIndex([1, 3], 2, iterator, context), 1);
   });
 
-  test('shuffle', function() {
-    var numbers = _.range(10);
-    var shuffled = _.shuffle(numbers);
-    notStrictEqual(numbers, shuffled, 'original object is unmodified');
-    ok(_.every(_.range(10), function() { //appears consistent?
-      return _.every(numbers, _.partial(_.contains, numbers));
-    }), 'contains the same members before and after shuffle');
-
-    shuffled = _.shuffle({a: 1, b: 2, c: 3, d: 4});
-    equal(shuffled.length, 4);
-    deepEqual(shuffled.sort(), [1, 2, 3, 4], 'works on objects');
-  });
-
-  test('sample', function() {
-    var numbers = _.range(10);
-    var allSampled = _.sample(numbers, 10).sort();
-    deepEqual(allSampled, numbers, 'contains the same members before and after sample');
-    allSampled = _.sample(numbers, 20).sort();
-    deepEqual(allSampled, numbers, 'also works when sampling more objects than are present');
-    ok(_.contains(numbers, _.sample(numbers)), 'sampling a single element returns something from the array');
-    strictEqual(_.sample([]), undefined, 'sampling empty array with no number returns undefined');
-    notStrictEqual(_.sample([], 5), [], 'sampling empty array with a number returns an empty array');
-    notStrictEqual(_.sample([1, 2, 3], 0), [], 'sampling an array with 0 picks returns an empty array');
-    deepEqual(_.sample([1, 2], -1), [], 'sampling a negative number of picks returns an empty array');
-    ok(_.contains([1, 2, 3], _.sample({a: 1, b: 2, c: 3})), 'sample one value from an object');
-  });
-
   test('toArray', function() {
     ok(!_.isArray(arguments), 'arguments object is not an array');
     ok(_.isArray(_.toArray(arguments)), 'arguments object converted into array');
@@ -643,54 +616,6 @@
     } catch(ex) { }
 
     ok(_.isArray(actual), 'should not throw converting a node list');
-  });
-
-  test('size', function() {
-    equal(_.size({one : 1, two : 2, three : 3}), 3, 'can compute the size of an object');
-    equal(_.size([1, 2, 3]), 3, 'can compute the size of an array');
-    equal(_.size({length: 3, 0: 0, 1: 0, 2: 0}), 3, 'can compute the size of Array-likes');
-
-    var func = function() {
-      return _.size(arguments);
-    };
-
-    equal(func(1, 2, 3, 4), 4, 'can test the size of the arguments object');
-
-    equal(_.size('hello'), 5, 'can compute the size of a string literal');
-    equal(_.size(new String('hello')), 5, 'can compute the size of string object');
-
-    equal(_.size(null), 0, 'handles nulls');
-  });
-
-  test('partition', function() {
-    var list = [0, 1, 2, 3, 4, 5];
-    deepEqual(_.partition(list, function(x) { return x < 4; }), [[0, 1, 2, 3], [4, 5]], 'handles bool return values');
-    deepEqual(_.partition(list, function(x) { return x & 1; }), [[1, 3, 5], [0, 2, 4]], 'handles 0 and 1 return values');
-    deepEqual(_.partition(list, function(x) { return x - 3; }), [[0, 1, 2, 4, 5], [3]], 'handles other numeric return values');
-    deepEqual(_.partition(list, function(x) { return x > 1 ? null : true; }), [[0, 1], [2, 3, 4, 5]], 'handles null return values');
-    deepEqual(_.partition(list, function(x) { if (x < 2) return true; }), [[0, 1], [2, 3, 4, 5]], 'handles undefined return values');
-    deepEqual(_.partition({a: 1, b: 2, c: 3}, function(x) { return x > 1; }), [[2, 3], [1]], 'handles objects');
-
-    deepEqual(_.partition(list, function(x, index) { return index % 2; }), [[1, 3, 5], [0, 2, 4]], 'can reference the array index');
-    deepEqual(_.partition(list, function(x, index, arr) { return x === arr.length - 1; }), [[5], [0, 1, 2, 3, 4]], 'can reference the collection');
-
-    // Default iterator
-    deepEqual(_.partition([1, false, true, '']), [[1, true], [false, '']], 'Default iterator');
-    deepEqual(_.partition([{x: 1}, {x: 0}, {x: 1}], 'x'), [[{x: 1}, {x: 1}], [{x: 0}]], 'Takes a string');
-
-    // Context
-    var predicate = function(x){ return x === this.x; };
-    deepEqual(_.partition([1, 2, 3], predicate, {x: 2}), [[2], [1, 3]], 'partition takes a context argument');
-
-    deepEqual(_.partition([{a: 1}, {b: 2}, {a: 1, b: 2}], {a: 1}), [[{a: 1}, {a: 1, b: 2}], [{b: 2}]], 'predicate can be object');
-
-    var object = {a: 1};
-    _.partition(object, function(val, key, obj) {
-      equal(val, 1);
-      equal(key, 'a');
-      equal(obj, object);
-      equal(this, predicate);
-    }, predicate);
   });
 
 }());
