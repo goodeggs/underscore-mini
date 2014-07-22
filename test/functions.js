@@ -89,40 +89,6 @@
     }, 100);
   });
 
-  test('once', function() {
-    var num = 0;
-    var increment = _.once(function(){ return ++num; });
-    increment();
-    increment();
-    equal(num, 1);
-
-    equal(increment(), 1, 'stores a memo to the last value');
-  });
-
-  test('Recursive onced function.', 1, function() {
-    var f = _.once(function(){
-      ok(true);
-      f();
-    });
-    f();
-  });
-
-  test('wrap', function() {
-    var greet = function(name){ return 'hi: ' + name; };
-    var backwards = _.wrap(greet, function(func, name){ return func(name) + ' ' + name.split('').reverse().join(''); });
-    equal(backwards('moe'), 'hi: moe eom', 'wrapped the salutation function');
-
-    var inner = function(){ return 'Hello '; };
-    var obj   = {name : 'Moe'};
-    obj.hi    = _.wrap(inner, function(fn){ return fn() + this.name; });
-    equal(obj.hi(), 'Hello Moe');
-
-    var noop    = function(){};
-    var wrapped = _.wrap(noop, function(){ return Array.prototype.slice.call(arguments, 0); });
-    var ret     = wrapped(['whats', 'your'], 'vector', 'victor');
-    deepEqual(ret, [noop, ['whats', 'your'], 'vector', 'victor']);
-  });
-
   test('negate', function() {
     var isOdd = function(n){ return n & 1; };
     equal(_.negate(isOdd)(2), true, 'should return the complement of the given function');

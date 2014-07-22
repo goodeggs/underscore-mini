@@ -600,33 +600,6 @@
     strictEqual(_.sortedIndex([1, 3], 2, iterator, context), 1);
   });
 
-  test('shuffle', function() {
-    var numbers = _.range(10);
-    var shuffled = _.shuffle(numbers);
-    notStrictEqual(numbers, shuffled, 'original object is unmodified');
-    ok(_.every(_.range(10), function() { //appears consistent?
-      return _.every(numbers, _.partial(_.contains, numbers));
-    }), 'contains the same members before and after shuffle');
-
-    shuffled = _.shuffle({a: 1, b: 2, c: 3, d: 4});
-    equal(shuffled.length, 4);
-    deepEqual(shuffled.sort(), [1, 2, 3, 4], 'works on objects');
-  });
-
-  test('sample', function() {
-    var numbers = _.range(10);
-    var allSampled = _.sample(numbers, 10).sort();
-    deepEqual(allSampled, numbers, 'contains the same members before and after sample');
-    allSampled = _.sample(numbers, 20).sort();
-    deepEqual(allSampled, numbers, 'also works when sampling more objects than are present');
-    ok(_.contains(numbers, _.sample(numbers)), 'sampling a single element returns something from the array');
-    strictEqual(_.sample([]), undefined, 'sampling empty array with no number returns undefined');
-    notStrictEqual(_.sample([], 5), [], 'sampling empty array with a number returns an empty array');
-    notStrictEqual(_.sample([1, 2, 3], 0), [], 'sampling an array with 0 picks returns an empty array');
-    deepEqual(_.sample([1, 2], -1), [], 'sampling a negative number of picks returns an empty array');
-    ok(_.contains([1, 2, 3], _.sample({a: 1, b: 2, c: 3})), 'sample one value from an object');
-  });
-
   test('toArray', function() {
     ok(!_.isArray(arguments), 'arguments object is not an array');
     ok(_.isArray(_.toArray(arguments)), 'arguments object converted into array');
